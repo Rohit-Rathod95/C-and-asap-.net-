@@ -134,4 +134,43 @@ Interpolated strings use `$"..."` and `{expression}` to place values in report t
 6. What does `F2` do in an interpolated string?
 7. Why are grade thresholds checked from highest to lowest?
 
+## Practical Assignment 04 – Scholarship & Placement Eligibility Engine
+
+### Problem Statement and Requirements
+
+Read a student's CGPA, backlog count, family income, coding score, and attendance. Determine placement, scholarship, and coding-round eligibility; calculate a performance bonus; and display the results in a console report.
+
+- **Placement:** CGPA >= 7.5, no backlogs, and attendance >= 75%.
+- **Scholarship:** CGPA >= 8.0 and family income <= Rs. 3,00,000.
+- **Coding round:** Coding score >= 60 or CGPA >= 9.0.
+- **Performance bonus:** Rs. 10,000 for CGPA >= 9.0; Rs. 5,000 for CGPA >= 8.0; otherwise Rs. 0.
+
+### Implementation Approach
+
+The implementation reads values using `Console.ReadLine()`, converts CGPA, income, and attendance to `double` and backlogs and coding score to `int`, then uses Boolean expressions to determine eligibility. A nested ternary selects the bonus. Interpolated strings print the report, with `N0` formatting for income and bonus amounts.
+
+The program currently reads interactive input. Input validation and exception handling are not implemented.
+
+### Concepts Applied
+
+- `Convert.ToDouble()` and `Convert.ToInt32()` for console input conversion.
+- Relational operators (`>=`, `<=`, `==`) and logical AND (`&&`) / OR (`||`).
+- `bool` variables for eligibility results.
+- Nested ternary operator for selecting a bonus tier.
+- String interpolation and `N0` numeric formatting.
+- No loops, arrays, or custom methods.
+
+### Key Learnings
+
+- Combine every required condition with `&&`; use `||` when either condition can satisfy a rule.
+- Apply each eligibility rule independently so one result does not stand in for another.
+- Check nested ternary thresholds from highest to lowest to select the correct bonus.
+- Numeric format strings such as `N0` affect display, not the underlying value.
+
+### Future Improvements
+
+- Validate entered values and handle malformed input.
+- Use named constants for thresholds, attendance requirements, and bonus amounts.
+- Update the assignment's introductory comment to reflect that the implementation reads values from the console.
+
 ## Revision Notes
