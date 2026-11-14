@@ -56,15 +56,15 @@ Read student details, marks for five subjects, attendance, previous CGPA, and ac
 
 ### Important Concept Notes
 
-- **`Console.ReadLine()`** reads a line of console input as text. For example: `string name = Console.ReadLine();`.
-- **`Convert.ToInt32()`** converts input text to an integer, as used for marks and backlogs: `int subject1 = Convert.ToInt32(Console.ReadLine());`.
-- **`Convert.ToDecimal()`** converts input text to a decimal number, as used for attendance and CGPA: `decimal attendance = Convert.ToDecimal(Console.ReadLine());`.
-- **Decimal arithmetic and the `m` suffix:** The `m` suffix makes a numeric literal a `decimal`. The assignment uses `500m` and `5m` so percentage and average calculations use decimal arithmetic: `decimal averageMarks = totalMarks / 5m;`.
-- **Integer division vs. decimal division:** Dividing two integers truncates any fractional part. Using a decimal operand preserves it; for example, `totalMarks / 5m` calculates a decimal average.
-- **`Math.Max()` and `Math.Min()`:** Return the larger or smaller of two values. Nested calls compare the five subject marks to find the highest and lowest.
-- **Logical AND (`&&`):** Is true only when every condition is true. Eligibility uses `attendance >= 75 && activeBacklogs == 0 && percentage >= 60`.
-- **Ternary operator:** `condition ? valueWhenTrue : valueWhenFalse` selects one of two values. The report uses `{(isEligible ? "YES" : "NO")}`.
-- **`F2` numeric formatting:** `{percentage:F2}` displays a number with two digits after the decimal point, such as `85.00`.
+- **`Console.ReadLine()`** reads a line of console input as text.
+- **`Convert.ToInt32()`** converts input text to an integer, as used for marks and backlogs.
+- **`Convert.ToDecimal()`** converts input text to a decimal number, as used for attendance and CGPA.
+- **Decimal arithmetic and the `m` suffix:** The `m` suffix makes a numeric literal a `decimal`; `500m` and `5m` support decimal percentage and average calculations.
+- **Integer vs. decimal division:** Integer division truncates the fractional part; using `totalMarks / 5m` preserves a decimal result.
+- **`Math.Max()` / `Math.Min()`:** Return the larger / smaller of two values; nested calls compare the five marks.
+- **Logical AND (`&&`):** True only when every condition is true.
+- **Ternary operator:** `condition ? valueWhenTrue : valueWhenFalse` selects one of two values.
+- **`F2`:** Displays a number with two digits after the decimal point.
 
 ### Important Syntax Examples
 
@@ -72,32 +72,23 @@ Read student details, marks for five subjects, attendance, previous CGPA, and ac
 int subject1 = Convert.ToInt32(Console.ReadLine());
 decimal attendance = Convert.ToDecimal(Console.ReadLine());
 decimal percentage = (totalMarks / 500m) * 100;
-int highestMarks = Math.Max(Math.Max(subject1, subject2), Math.Max(subject3, Math.Max(subject4, subject5)));
-Console.WriteLine($"Percentage        : {percentage:F2}%");
-Console.WriteLine($"Placement Eligible: {(isEligible ? "YES" : "NO")}");
+Console.WriteLine($"Percentage: {percentage:F2}%");
 ```
 
 ### Calculation Formulas
 
-- **Total marks:** `subject1 + subject2 + subject3 + subject4 + subject5`
+- **Total:** `subject1 + subject2 + subject3 + subject4 + subject5`
 - **Percentage:** `(totalMarks / 500m) * 100`
-- **Average marks:** `totalMarks / 5m`
-- **Highest / lowest:** Compare the five marks using nested `Math.Max()` / `Math.Min()` calls.
+- **Average:** `totalMarks / 5m`
+- **Highest / lowest:** Nested `Math.Max()` / `Math.Min()` calls.
 
-### Grade Classification Logic
+### Grade Classification
 
-The program checks percentage thresholds from highest to lowest:
+Check thresholds from highest to lowest: `>= 90`: A+, `>= 80`: A, `>= 70`: B, `>= 60`: C, `>= 50`: D, otherwise F.
 
-- `>= 90`: A+
-- `>= 80`: A
-- `>= 70`: B
-- `>= 60`: C
-- `>= 50`: D
-- Otherwise: F
+### Academic Eligibility
 
-### Academic Eligibility Condition
-
-The student is eligible only when all three conditions are true:
+Eligible when attendance is at least 75%, there are no active backlogs, and percentage is at least 60%:
 
 ```csharp
 bool isEligible = attendance >= 75 && activeBacklogs == 0 && percentage >= 60;
@@ -105,72 +96,299 @@ bool isEligible = attendance >= 75 && activeBacklogs == 0 && percentage >= 60;
 
 ### String Interpolation and Formatting
 
-Interpolated strings use `$"..."` and `{expression}` to place values in report text. The assignment formats percentage and average to two decimal places and uses a ternary expression to print `YES` or `NO` for eligibility.
+Use `$"..."` with `{expression}` to insert values. The assignment uses `F2` for percentage and average, and a ternary expression to display eligibility.
 
 ### Lessons Learned
 
-- Convert console text to the appropriate numeric type before doing calculations.
-- Use decimal operands in calculations where fractional results should be retained.
-- Order grade checks from the highest threshold to the lowest.
-- Combine all eligibility requirements with `&&` so every requirement must be met.
-- Use interpolation to keep report labels and calculated values together.
+- Convert console text before calculating.
+- Use decimal operands when fractional results are needed.
+- Check grade thresholds from highest to lowest.
+- Use `&&` when all eligibility conditions must be true.
 
 ### Common Mistakes
 
-- Assuming `Console.ReadLine()` already returns a number instead of converting its text.
-- Using integer division when a fractional decimal result is needed.
-- Omitting the `m` suffix from decimal literals such as `500m` and `5m`.
+- Treating `Console.ReadLine()` as a number without conversion.
+- Using integer division or omitting the `m` suffix.
 - Checking grade thresholds in the wrong order.
-- Using `||` instead of `&&` when all eligibility conditions must be satisfied.
-- Forgetting that `F2` formats the displayed value; it does not change the stored value.
+- Using `||` instead of `&&` when all conditions must be true.
+- Assuming `F2` changes the stored value rather than only its display.
 
 ### Assessment Questions
 
-1. What does `Console.ReadLine()` return, and why is conversion needed for marks?
+1. What does `Console.ReadLine()` return?
 2. Why does the percentage formula use `500m`?
-3. What could happen to an average if it were calculated using integer division?
-4. How do the nested `Math.Max()` and `Math.Min()` calls find the highest and lowest marks?
-5. Why must all three eligibility checks be joined with `&&`?
-6. What does `F2` do in an interpolated string?
-7. Why are grade thresholds checked from highest to lowest?
+3. What is the difference between integer and decimal division?
+4. Why must all eligibility checks use `&&`?
+5. What does `F2` format?
 
 ## Practical Assignment 04 – Scholarship & Placement Eligibility Engine
 
 ### Problem Statement and Requirements
 
-Read a student's CGPA, backlog count, family income, coding score, and attendance. Determine placement, scholarship, and coding-round eligibility; calculate a performance bonus; and display the results in a console report.
+Read CGPA, backlog count, family income, coding score, and attendance. Determine eligibility and calculate a performance bonus.
 
 - **Placement:** CGPA >= 7.5, no backlogs, and attendance >= 75%.
 - **Scholarship:** CGPA >= 8.0 and family income <= Rs. 3,00,000.
 - **Coding round:** Coding score >= 60 or CGPA >= 9.0.
-- **Performance bonus:** Rs. 10,000 for CGPA >= 9.0; Rs. 5,000 for CGPA >= 8.0; otherwise Rs. 0.
+- **Bonus:** Rs. 10,000 for CGPA >= 9.0; Rs. 5,000 for CGPA >= 8.0; otherwise Rs. 0.
 
 ### Implementation Approach
 
-The implementation reads values using `Console.ReadLine()`, converts CGPA, income, and attendance to `double` and backlogs and coding score to `int`, then uses Boolean expressions to determine eligibility. A nested ternary selects the bonus. Interpolated strings print the report, with `N0` formatting for income and bonus amounts.
+Read values from the console, convert them to `double` or `int`, evaluate eligibility with relational and logical operators, select the bonus with a nested ternary, and print an interpolated report using `N0` formatting.
 
-The program currently reads interactive input. Input validation and exception handling are not implemented.
+Input validation and exception handling are not implemented.
 
-### Concepts Applied
+### Concepts and Key Learnings
 
-- `Convert.ToDouble()` and `Convert.ToInt32()` for console input conversion.
-- Relational operators (`>=`, `<=`, `==`) and logical AND (`&&`) / OR (`||`).
-- `bool` variables for eligibility results.
-- Nested ternary operator for selecting a bonus tier.
-- String interpolation and `N0` numeric formatting.
-- No loops, arrays, or custom methods.
-
-### Key Learnings
-
-- Combine every required condition with `&&`; use `||` when either condition can satisfy a rule.
-- Apply each eligibility rule independently so one result does not stand in for another.
-- Check nested ternary thresholds from highest to lowest to select the correct bonus.
-- Numeric format strings such as `N0` affect display, not the underlying value.
+- Use `&&` when all requirements must hold and `||` when either condition is enough.
+- Evaluate each eligibility rule independently.
+- Check nested ternary thresholds from highest to lowest.
+- `N0` formats displayed numbers; it does not change their values.
+- The program does not use loops, arrays, or custom methods.
 
 ### Future Improvements
 
 - Validate entered values and handle malformed input.
-- Use named constants for thresholds, attendance requirements, and bonus amounts.
-- Update the assignment's introductory comment to reflect that the implementation reads values from the console.
+- Use named constants for thresholds and bonus amounts.
+- Update the introductory code comment to match the interactive input behavior.
+
+## Lesson 05: Conditional Statements in C#
+
+Conditionals select code based on whether a condition or pattern matches.
+
+### `if`
+
+Runs its body when the condition is true.
+
+```csharp
+if (score >= 50) Console.WriteLine("Pass");
+```
+
+### `if-else`
+
+Chooses one of two branches.
+
+```csharp
+if (isRaining) Console.WriteLine("Take an umbrella");
+else Console.WriteLine("No umbrella needed");
+```
+
+### `else-if` Ladder
+
+Checks conditions in order; the first true branch runs. Order overlapping ranges from highest to lowest.
+
+```csharp
+if (score >= 90) grade = "A";
+else if (score >= 50) grade = "Pass";
+else grade = "Fail";
+```
+
+### Nested `if`
+
+An inner condition is checked only if its containing branch runs.
+
+```csharp
+if (hasAccount)
+{
+    if (passwordIsCorrect) Console.WriteLine("Signed in");
+}
+```
+
+### `switch` Statement
+
+Selects a statement section by matching a value; `break` exits that section.
+
+```csharp
+switch (day)
+{
+    case 1: Console.WriteLine("Monday"); break;
+    default: Console.WriteLine("Other day"); break;
+}
+```
+
+### Multiple Switch Cases
+
+Case labels can share a body when their result is the same.
+
+```csharp
+switch (day)
+{
+    case 6:
+    case 7: Console.WriteLine("Weekend"); break;
+    default: Console.WriteLine("Weekday"); break;
+}
+```
+
+### Switch Expression
+
+Returns a value from the first matching arm; `_` is the fallback pattern.
+
+```csharp
+string grade = score switch { >= 90 => "A", >= 50 => "Pass", _ => "Fail" };
+```
+
+### Pattern Matching
+
+Matches a value by type or other pattern; `when` adds a condition.
+
+```csharp
+string result = value switch
+{
+    string text when text.Length > 0 => text,
+    _ => "No text"
+};
+```
+
+### Relational Patterns
+
+Use `<`, `<=`, `>`, or `>=` to match numeric ranges.
+
+```csharp
+string ageGroup = age switch { < 13 => "Child", < 20 => "Teen", _ => "Adult" };
+```
+
+### `if-else` vs. `switch` vs. Switch Expression
+
+- **`if-else`:** General Boolean expressions and complex conditions.
+- **`switch`:** Several alternatives with statement bodies.
+- **Switch expression:** Maps alternatives to a value.
+
+```csharp
+string status = code switch { 200 => "OK", 404 => "Not found", _ => "Other" };
+```
+
+### Execution Flow
+
+Conditions are evaluated in order; the selected branch executes, then control continues after the conditional.
+
+```csharp
+if (score >= 50) Console.WriteLine("Pass");
+else Console.WriteLine("Fail");
+Console.WriteLine("Done");
+```
+
+### Common Mistake and Interview Note
+
+An `else-if` chain stops after its first match, unlike independent `if` statements. Use `==` for equality, not `=`.
+
+### MCQs
+
+1. What does a switch expression return? **Answer:** The value of its matching arm.
+2. What does `when` add to a pattern? **Answer:** An extra condition that must be true.
+
+## Lesson 06: Loops in C#
+
+Loops repeat statements while there are more iterations or items to process.
+
+### `for` Loop and Its Parts
+
+Initialization runs once, the condition is checked before each iteration, and update runs after the body.
+
+```csharp
+for (int i = 1; i <= 3; i++)
+    Console.WriteLine(i);
+```
+
+### `while` Loop
+
+Checks its condition before each iteration; it may run zero times.
+
+```csharp
+int count = 1;
+while (count <= 3) { Console.WriteLine(count); count++; }
+```
+
+### `do-while` Loop
+
+Checks its condition after the body, so it runs at least once.
+
+```csharp
+int count = 1;
+do { Console.WriteLine(count); count++; } while (count <= 3);
+```
+
+### `foreach` Loop
+
+Visits each item in a collection without managing an index.
+
+```csharp
+foreach (string subject in subjects) Console.WriteLine(subject);
+```
+
+### `break`
+
+Exits the nearest loop immediately.
+
+```csharp
+for (int i = 1; i <= 5; i++) { if (i == 3) break; Console.WriteLine(i); }
+```
+
+### `continue`
+
+Skips the rest of the current iteration.
+
+```csharp
+for (int i = 1; i <= 3; i++) { if (i == 2) continue; Console.WriteLine(i); }
+```
+
+### Nested Loops
+
+The inner loop completes for each outer-loop iteration.
+
+```csharp
+for (int row = 1; row <= 2; row++)
+    for (int column = 1; column <= 2; column++)
+        Console.WriteLine($"{row},{column}");
+```
+
+### Pattern Printing
+
+Use the outer loop for rows and the inner loop for characters in each row.
+
+```csharp
+for (int row = 1; row <= 3; row++)
+{
+    for (int column = 1; column <= row; column++) Console.Write("*");
+    Console.WriteLine();
+}
+```
+
+### Infinite Loops
+
+A loop is infinite if its condition never becomes false; include an exit when needed.
+
+```csharp
+while (true) { if (Console.ReadLine() == "quit") break; }
+```
+
+### Loop Execution Flow
+
+`for`: initialize → condition → body → update. `while`: condition → body. `do-while`: body → condition. `foreach`: next item → body. `break` exits; `continue` advances to the next iteration.
+
+### Student Marks Analyzer
+
+Use a loop to total marks; cast before division to preserve a fractional average.
+
+```csharp
+int[] marks = { 78, 85, 92 };
+int total = 0;
+foreach (int mark in marks) total += mark;
+double average = (double)total / marks.Length;
+Console.WriteLine($"Average: {average:F2}");
+```
+
+### Common Mistakes and Interview Notes
+
+- Update a `while` loop counter so its condition can eventually become false.
+- `do-while` runs at least once; `while` may not run at all.
+- `break` exits the nearest loop; `continue` skips to its next iteration.
+- Nested loops multiply iterations (for example, 2 outer × 3 inner = 6 inner-body executions).
+- Avoid dividing by zero when a collection may be empty.
+
+### MCQs
+
+1. Which loop always executes at least once? **Answer:** `do-while`.
+2. What does `continue` do? **Answer:** Skips the rest of the current iteration.
+3. If an outer loop runs 3 times and an inner loop runs 2 times per outer iteration, how many inner-body runs occur? **Answer:** 6.
 
 ## Revision Notes
