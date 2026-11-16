@@ -392,3 +392,548 @@ Console.WriteLine($"Average: {average:F2}");
 3. If an outer loop runs 3 times and an inner loop runs 2 times per outer iteration, how many inner-body runs occur? **Answer:** 6.
 
 ## Revision Notes
+
+## Lesson 10: Object-Oriented Programming (OOP)
+
+Object-Oriented Programming (OOP) is a programming model that organizes code around objects and classes instead of writing everything as a single procedure. It helps make software easier to understand, reuse, extend, and maintain.
+
+### 1) OOP Definition and the Four Pillars
+
+OOP is a design approach where data and the operations that work on that data are grouped together into objects.
+
+The four main pillars of OOP are:
+
+- **Encapsulation:** Hiding internal details and exposing only what is necessary.
+- **Abstraction:** Showing only important behavior and hiding complexity.
+- **Inheritance:** Creating a new class from an existing class to reuse code.
+- **Polymorphism:** Allowing one interface to take many forms.
+
+These pillars help build modular and scalable applications.
+
+### 2) Classes and Objects
+
+A **class** is a blueprint or template.
+
+An **object** is an instance of a class.
+
+```csharp
+class Employee
+{
+    public string Name;
+}
+
+Employee emp1 = new Employee();
+emp1.Name = "Riya";
+
+Employee emp2 = new Employee();
+emp2.Name = "Aman";
+```
+
+- `Employee` is the class.
+- `emp1` and `emp2` are objects.
+- Each object has its own data.
+
+### 3) Fields vs Properties
+
+A **field** is a variable declared inside a class. It stores data.
+
+```csharp
+class Employee
+{
+    public string name; // field
+}
+```
+
+A **property** is a member that provides access to private data with controlled logic.
+
+```csharp
+class Employee
+{
+    private string name; // field
+
+    public string Name
+    {
+        get { return name; }
+        set { name = value; }
+    }
+}
+```
+
+#### Difference
+
+- **Fields** are usually used for internal storage.
+- **Properties** are used for controlled external access.
+- Properties can validate values, compute values, or protect data.
+
+### 4) Auto-Properties and Property Validation
+
+C# provides **auto-properties** for simple properties.
+
+```csharp
+class Employee
+{
+    public string Name { get; set; }
+    public int Age { get; set; }
+}
+```
+
+This is shorter and cleaner, but it still may need validation.
+
+#### Property Validation
+
+```csharp
+class Employee
+{
+    private string name;
+
+    public string Name
+    {
+        get => name;
+        set
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                throw new ArgumentException("Name cannot be empty.");
+            name = value;
+        }
+    }
+}
+```
+
+This ensures the object remains valid.
+
+### 5) Constructors and Constructor Overloading
+
+A **constructor** is a special method used to initialize an object when it is created.
+
+```csharp
+class Employee
+{
+    public string Name;
+
+    public Employee()
+    {
+        Name = "Unknown";
+    }
+}
+```
+
+#### Constructor Overloading
+
+A class can have more than one constructor with different parameter lists.
+
+```csharp
+class Employee
+{
+    public string Name;
+    public int Id;
+
+    public Employee()
+    {
+        Name = "Unknown";
+        Id = 0;
+    }
+
+    public Employee(string name, int id)
+    {
+        Name = name;
+        Id = id;
+    }
+}
+```
+
+```csharp
+Employee e1 = new Employee();
+Employee e2 = new Employee("Rahul", 101);
+```
+
+This is called **constructor overloading**.
+
+### 6) `this` Keyword
+
+`this` refers to the current instance of the class.
+
+```csharp
+class Employee
+{
+    public string Name;
+
+    public Employee(string name)
+    {
+        this.Name = name;
+    }
+}
+```
+
+It is often used to:
+
+- distinguish class fields from parameters
+- call another constructor
+- refer to the current object
+
+### 7) Access Modifiers
+
+Access modifiers control visibility and access level of members.
+
+Common ones:
+
+- **public:** accessible from anywhere
+- **private:** accessible only inside the same class
+- **protected:** accessible inside the class and derived classes
+- **internal:** accessible within the same assembly
+
+```csharp
+class Employee
+{
+    public string Name;      // accessible everywhere
+    private int salary;      // accessible only inside class
+    protected string dept;   // accessible in derived classes
+}
+```
+
+### 8) Encapsulation
+
+Encapsulation means hiding the internal state of an object and exposing only the required operations.
+
+```csharp
+class Employee
+{
+    private decimal salary;
+
+    public decimal Salary
+    {
+        get { return salary; }
+        set
+        {
+            if (value >= 0)
+                salary = value;
+        }
+    }
+}
+```
+
+This ensures:
+
+- controlled access
+- data protection
+- less chance of invalid states
+
+### 9) Inheritance and Constructor Chaining Using `base`
+
+Inheritance allows a class to inherit properties and methods from another class.
+
+```csharp
+class Person
+{
+    public string Name { get; set; }
+
+    public Person(string name)
+    {
+        Name = name;
+    }
+}
+
+class Employee : Person
+{
+    public int Id { get; set; }
+
+    public Employee(string name, int id) : base(name)
+    {
+        Id = id;
+    }
+}
+```
+
+- `Employee` inherits from `Person`.
+- `base(name)` calls the constructor of the base class.
+- This is called **constructor chaining**.
+
+### 10) Method Overloading vs Overriding
+
+#### Method Overloading
+
+Multiple methods in the same class share the same name but have different parameters.
+
+```csharp
+class Calculator
+{
+    public int Add(int a, int b) => a + b;
+    public double Add(double a, double b) => a + b;
+}
+```
+
+This is resolved at compile time.
+
+#### Method Overriding
+
+A derived class provides a different implementation of a base class method.
+
+```csharp
+class Animal
+{
+    public virtual void Speak()
+    {
+        Console.WriteLine("Animal speaks");
+    }
+}
+
+class Dog : Animal
+{
+    public override void Speak()
+    {
+        Console.WriteLine("Dog barks");
+    }
+}
+```
+
+- Overloading = same class, different signature
+- Overriding = base and derived class, same method name/signature
+
+### 11) Runtime Polymorphism Using `virtual` and `override`
+
+Polymorphism means one object can be treated as a different type depending on runtime behavior.
+
+```csharp
+Animal a = new Dog();
+a.Speak();
+```
+
+Output:
+
+```text
+Dog barks
+```
+
+This works because:
+
+- the base method is marked `virtual`
+- the derived method is marked `override`
+
+```csharp
+class Animal
+{
+    public virtual void Speak()
+    {
+        Console.WriteLine("Animal speaks");
+    }
+}
+
+class Cat : Animal
+{
+    public override void Speak()
+    {
+        Console.WriteLine("Cat meows");
+    }
+}
+```
+
+This is the heart of **runtime polymorphism**.
+
+### 12) Abstract Classes and Abstract Methods
+
+An **abstract class** cannot be instantiated directly.
+
+It may contain both abstract and concrete members.
+
+```csharp
+abstract class Shape
+{
+    public abstract double Area();
+}
+
+class Circle : Shape
+{
+    public double Radius { get; set; }
+
+    public override double Area()
+    {
+        return 3.14 * Radius * Radius;
+    }
+}
+```
+
+- `abstract` method has no body
+- derived classes must implement it
+- abstract classes are used for common behavior and design
+
+### 13) Interfaces
+
+An **interface** defines a contract. A class implements it by providing the required members.
+
+```csharp
+interface IPrintable
+{
+    void Print();
+}
+
+class Invoice : IPrintable
+{
+    public void Print()
+    {
+        Console.WriteLine("Invoice printed");
+    }
+}
+```
+
+- interfaces do not contain implementation
+- a class can implement multiple interfaces
+- interfaces help achieve loose coupling
+
+### 14) Abstract Class vs Interface
+
+| Concept | Abstract Class | Interface |
+|---|---|---|
+| Can have implementation | Yes | No |
+| Multiple inheritance | No | Yes |
+| Can contain fields | Yes | No (except constants) |
+| Used for shared base behavior | Yes | No |
+| Used for contracts | Sometimes | Yes |
+
+**Use an abstract class** when classes share common code.
+
+**Use an interface** when you want to define a contract that many unrelated classes can implement.
+
+### 15) Static Members
+
+A **static member** belongs to the class, not to a single instance.
+
+```csharp
+class MathHelper
+{
+    public static int Add(int a, int b)
+    {
+        return a + b;
+    }
+}
+
+int result = MathHelper.Add(5, 7);
+```
+
+Static members are accessed using the class name.
+
+Important points:
+
+- static fields are shared across all instances
+- static methods cannot access instance members without an object
+- static members are used for utility functions and shared data
+
+### 16) Object Initializers
+
+Object initializers let you assign values to members when creating an object.
+
+```csharp
+Employee emp = new Employee
+{
+    Name = "Neha",
+    Id = 201,
+    Department = "Engineering"
+};
+```
+
+This is cleaner than manually setting properties one by one.
+
+### 17) Complete Employee/Developer Example
+
+```csharp
+using System;
+
+class Employee
+{
+    public string Name { get; set; }
+    public int Id { get; set; }
+    public string Department { get; set; }
+
+    public Employee()
+    {
+        Name = "Unknown";
+        Department = "General";
+    }
+
+    public Employee(string name, int id, string department)
+    {
+        Name = name;
+        Id = id;
+        Department = department;
+    }
+
+    public virtual void Display()
+    {
+        Console.WriteLine($"Employee: {Name}, Id: {Id}, Department: {Department}");
+    }
+}
+
+class Developer : Employee
+{
+    public string Skill { get; set; }
+
+    public Developer(string name, int id, string department, string skill)
+        : base(name, id, department)
+    {
+        Skill = skill;
+    }
+
+    public override void Display()
+    {
+        Console.WriteLine($"Developer: {Name}, Id: {Id}, Department: {Department}, Skill: {Skill}");
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Employee e1 = new Employee("Rohan", 101, "HR");
+        e1.Display();
+
+        Developer d1 = new Developer("Anu", 202, "IT", "C#");
+        d1.Display();
+
+        Employee e2 = new Developer("Karan", 303, "Software", "ASP.NET");
+        e2.Display();
+    }
+}
+```
+
+#### Example Explanation
+
+- `Employee` is a base class.
+- `Developer` inherits from `Employee`.
+- `base(name, id, department)` calls the parent constructor.
+- `Display()` is overridden to provide developer-specific output.
+- `Employee e2 = new Developer(...)` shows runtime polymorphism.
+
+### 18) Important Interview Questions and Mistakes
+
+#### Common Interview Questions
+
+1. What is the difference between a class and an object?
+2. What are the four pillars of OOP?
+3. What is the difference between a field and a property?
+4. What is the purpose of `this`?
+5. What is method overloading and method overriding?
+6. What is the difference between an abstract class and an interface?
+7. Why is encapsulation important?
+8. What is runtime polymorphism?
+9. Why use `virtual` and `override` together?
+10. What is constructor chaining with `base`?
+
+#### Common Mistakes
+
+- Declaring fields as `public` and exposing internal state directly.
+- Forgetting to mark overridden methods with `override`.
+- Using `new` to hide a base method instead of proper overriding.
+- Not calling `base(...)` in derived constructors when needed.
+- Confusing method overloading with method overriding.
+- Using `static` where instance behavior is required.
+- Forgetting to make base methods `virtual` before overriding them.
+- Thinking an abstract class can be instantiated.
+- Not understanding that interfaces define contracts, not implementation.
+
+### Quick Summary
+
+OOP helps us model real-world entities using classes and objects. The core ideas like encapsulation, inheritance, polymorphism, and abstraction make code cleaner, reusable, and easier to maintain. In C#, these concepts are used heavily in application development, design patterns, and interviews.
+
+### Interview Tip
+
+When answering OOP questions in interviews, explain both the concept and a small code example. This shows clarity, understanding, and practical implementation skill.
+
+## Revision Notes
